@@ -1,20 +1,27 @@
-let options = ["rock", "paper", "scissors"]
-let result = ""
 let playerScore = 0;
 let computerScore = 0;
+let result="";
+
+const buttons = document.querySelectorAll('.btn')
+const playerElement= document.querySelector('.player')
+const computerElement= document.querySelector('.computer')
+const finalResultsElement = document.querySelector('.final-results')
+
+buttons.forEach(button =>{
+    button.addEventListener('click', function(){
+        playRound(button.value);
+        showResults();
+    })
+})
 
 function getComputerChoice() {
+    const options = ["rock", "paper", "scissors"]
     let computerSelection = options[Math.floor(Math.random()*options.length)]
     return computerSelection
 }
 
-function getplayerSelection(){
-    let playerSelection = prompt("What's your choice?");
-    return playerSelection = playerSelection.toLowerCase()
-}
-
-function playRound(playerSelection, computerSelection) {
-
+function playRound(playerSelection) {
+    const computerSelection = getComputerChoice();
     if (playerSelection === computerSelection) {
         result = "It's a draw"
     } else if (playerSelection === "rock" && computerSelection === "scissors") {
@@ -36,28 +43,21 @@ function playRound(playerSelection, computerSelection) {
         result = "You Lose! Rock beats Scissors"
         computerScore = computerScore + 1
     }
-
-    return result
   }
 
+function showResults(){
+    playerElement.textContent= `Player score: ${playerScore}`
+    computerElement.textContent = `Computer score: ${computerScore}`
 
-
-  function game() {
-
-    for (let i = 0; i < 5; i++){
-        const playerSelection = getplayerSelection();
-        const computerSelection = getComputerChoice();
-        console.log(playRound(playerSelection, computerSelection));
-    }
-
-    if (playerScore > computerScore){
-        alert("The Winner is Player")
-    } else if (playerScore < computerScore) {
-        alert("The Winner is Computer")
+    if(playerScore === 5 ){
+        finalResultsElement.textContent = 'The player won. Congratulations!'
+        playerScore = 0;
+        computerScore = 0;
+    } else if(computerScore === 5) {
+        finalResultsElement.textContent = 'Unfortunately, this time the computer was better.'
+        playerScore = 0;
+        computerScore = 0;
     } else {
-        alert("None win this time")
+        finalResultsElement.textContent = ''
     }
-
-    playerScore = 0;
-    computerScore = 0;
-  }
+}
